@@ -11,9 +11,11 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import authConfig from './config/authConfig';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
+    UsersModule,
     ConfigModule.forFeature(authConfig),
     JwtModule.registerAsync(authConfig.asProvider()),
   ],

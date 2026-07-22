@@ -13,17 +13,17 @@ export class RegisterDto {
   @IsNotEmpty()
   lastName: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'johndoe@gmail.com' })
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '123456' })
   @IsString()
   @IsNotEmpty()
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'admin' })
   @IsEnum(Role)
   role: Role;
 }
