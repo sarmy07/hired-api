@@ -68,7 +68,7 @@ export class AuthService {
       user.password,
     );
 
-    if (!validPass) throw new UnauthorizedException('invlaid credentials');
+    if (!validPass) throw new UnauthorizedException('invalid credentials');
 
     const { password, ...rest } = user;
 

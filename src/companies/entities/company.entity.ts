@@ -1,35 +1,49 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Job } from 'src/jobs/entities/job.entity';
+import { User } from 'src/users/entities/user.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Company {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
-  @Column()
+  @Column({ nullable: true })
   website: string;
 
-  @Column()
+  @Column({ nullable: true })
   industry: string;
 
-  @Column()
+  @Column({ nullable: true })
   location: string;
 
-  @Column()
+  @Column({ nullable: true })
   logo: string;
 
-  @Column()
+  @Column({ nullable: true })
   size: string;
 
   @Column({
     default: true,
   })
   verified: boolean;
+
+  @ManyToOne(() => User, (u) => u.companies)
+  owner: User;
+
+  @OneToMany(() => Job, (j) => j.company)
+  jobs: Job[];
 
   //   @Column()
   //   ownerId:

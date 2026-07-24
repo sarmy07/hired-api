@@ -1,6 +1,7 @@
 import { ExperienceLevel } from 'src/common/enums/experience-level.enum';
 import { EmploymentType } from 'src/common/enums/employment-type.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Company } from 'src/companies/entities/company.entity';
 
 @Entity()
 export class Job {
@@ -48,4 +49,7 @@ export class Job {
 
   @Column()
   deadline: string;
+
+  @ManyToOne(() => Company, (c) => c.jobs)
+  company: Company;
 }

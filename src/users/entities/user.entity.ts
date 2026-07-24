@@ -1,8 +1,10 @@
 import { Role } from 'src/common/enums/user.role.enum';
+import { Company } from 'src/companies/entities/company.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -49,6 +51,9 @@ export class User {
     nullable: true,
   })
   refreshToken: string;
+
+  @OneToMany(() => Company, (c) => c.owner)
+  companies: Company[];
 
   @CreateDateColumn()
   createdAt: Date;
