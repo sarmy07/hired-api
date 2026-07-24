@@ -23,13 +23,14 @@ import { SavedJobsModule } from './saved-jobs/saved-jobs.module';
 import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { ReportsModule } from './reports/reports.module';
 import { AdminModule } from './admin/admin.module';
+import authConfig from './auth/config/authConfig';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: validation,
-      load: [],
+      load: [authConfig],
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
