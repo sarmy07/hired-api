@@ -1,26 +1,66 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Skill } from './entities/skill.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class SkillsService {
-  create(createSkillDto: CreateSkillDto) {
-    return 'This action adds a new skill';
+  constructor(
+    @InjectRepository(Skill)
+    private readonly skillRepo: Repository<Skill>,
+  ) {}
+
+  async create(dto: CreateSkillDto) {
+    dto.name = dto.name.trim().toLowerCase();
+    const existingSkill = await this.skillRepo.findOne({
+      where: {
+        name: dto.name,
+      },
+    });
+
+    if (existingSkill) throw new ConflictException();
+    const skill = this.skillRepo.create(dto);
+
+    return await this.skillRepo.save(skill);
   }
 
-  findAll() {
-    return `This action returns all skills`;
+  async findAll() {
+    return await this.skillRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} skill`;
+  async findOne(id: string) {
+    return await this.skillRepo.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateSkillDto: UpdateSkillDto) {
-    return `This action updates a #${id} skill`;
+  async update(id: string, dto: UpdateSkillDto) {
+    const skill = await this.skillRepo.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!skill) throw new NotFoundException('skill not found');
+
+    Object.assign(skill, dto);
+    return this.skillRepo.save(skill);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} skill`;
+  async remove(id: string) {
+    const skill = await this.skillRepo.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!skill) throw new NotFoundException('skill not found');
+    return this.skillRepo.delete(skill);
   }
 }
