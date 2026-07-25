@@ -46,8 +46,8 @@ export class JobsService {
     return await this.jobRepo.save(job);
   }
 
-  findAll() {
-    return `This action returns all jobs`;
+  async findAll() {
+    return await this.jobRepo.find();
   }
 
   async findOne(id: string) {
