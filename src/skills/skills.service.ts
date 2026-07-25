@@ -7,7 +7,7 @@ import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Skill } from './entities/skill.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class SkillsService {
@@ -32,6 +32,14 @@ export class SkillsService {
 
   async findAll() {
     return await this.skillRepo.find();
+  }
+
+  async findByIds(ids: string[]) {
+    return await this.skillRepo.find({
+      where: {
+        id: In(ids),
+      },
+    });
   }
 
   async findOne(id: string) {

@@ -29,13 +29,17 @@ export class Job {
   employmentType: EmploymentType;
 
   @Column({
-    type: 'int',
+    type: 'decimal',
+    precision: 12,
+    scale: 2,
     nullable: true,
   })
   salaryMin: number;
 
   @Column({
-    type: 'int',
+    type: 'decimal',
+    precision: 12,
+    scale: 2,
     nullable: true,
   })
   salaryMax: number;
@@ -52,13 +56,25 @@ export class Job {
   @Column()
   location: string;
 
-  //   @Column()
-  //   remoteType:
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  deadline: Date;
 
-  @Column()
-  deadline: string;
+  @Column('text', {
+    nullable: true,
+  })
+  responsibilities: string;
 
-  @ManyToOne(() => Company, (c) => c.jobs)
+  @Column('text', {
+    nullable: true,
+  })
+  requirements: string;
+
+  @ManyToOne(() => Company, (c) => c.jobs, {
+    onDelete: 'CASCADE',
+  })
   company: Company;
 
   @ManyToMany(() => Skill)
