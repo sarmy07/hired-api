@@ -10,9 +10,9 @@ import { CurrentUser } from 'src/common/decorators/current.user.decorator';
 import { RefreshTokenDto } from './dtos/refresh-token.dto';
 import { User } from 'src/users/entities/user.entity';
 import { JwtAuthGuard } from './guards/jwt.auth.guard';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Auth')
+@ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

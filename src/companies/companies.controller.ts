@@ -17,7 +17,9 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Role } from 'src/common/enums/user.role.enum';
 import { Roles } from 'src/common/decorators/role.decorator';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('companies')
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) {}

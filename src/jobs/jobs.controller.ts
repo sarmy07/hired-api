@@ -17,7 +17,9 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/common/decorators/role.decorator';
 import { Role } from 'src/common/enums/user.role.enum';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('jobs')
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}

@@ -6,10 +6,12 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Company } from 'src/companies/entities/company.entity';
 import { Skill } from 'src/skills/entities/skill.entity';
+import { Application } from 'src/applications/entities/application.entity';
 
 @Entity()
 export class Job {
@@ -80,4 +82,7 @@ export class Job {
   @ManyToMany(() => Skill)
   @JoinTable()
   skills: Skill[];
+
+  @OneToMany(() => Application, (a) => a.job)
+  applications: Application[];
 }

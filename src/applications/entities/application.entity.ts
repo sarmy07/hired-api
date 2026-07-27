@@ -1,8 +1,11 @@
 import { ApplicationStatus } from 'src/common/enums/application.status.enum';
+import { Job } from 'src/jobs/entities/job.entity';
+import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -11,7 +14,10 @@ export class Application {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    type: 'text',
+    nullable: true,
+  })
   coverLetter: string;
 
   @Column({
@@ -21,8 +27,20 @@ export class Application {
   })
   status: ApplicationStatus;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   resumeSnapshot: string;
+
+  @ManyToOne(() => User, (u) => u.applications, {
+    onDelete: 'SET NULL',
+  })
+  applicant: User;
+
+  @ManyToOne(() => Job, (j) => j.applications, {
+    onDelete: 'CASCADE',
+  })
+  job: Job;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,4 +1,9 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateApplicationDto } from './create-application.dto';
+import { IsEnum } from 'class-validator';
+import { ApplicationStatus } from 'src/common/enums/application.status.enum';
 
-export class UpdateApplicationDto extends PartialType(CreateApplicationDto) {}
+export class UpdateApplicationDto extends PartialType(CreateApplicationDto) {
+  @IsEnum(ApplicationStatus)
+  status: ApplicationStatus;
+}

@@ -63,6 +63,7 @@ export class CompaniesService {
       },
       relations: {
         owner: true,
+        jobs: true,
       },
     });
     if (!company) throw new NotFoundException('company not found');

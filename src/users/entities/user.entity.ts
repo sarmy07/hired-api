@@ -1,3 +1,5 @@
+import { application } from 'express';
+import { Application } from 'src/applications/entities/application.entity';
 import { Role } from 'src/common/enums/user.role.enum';
 import { Company } from 'src/companies/entities/company.entity';
 import {
@@ -54,6 +56,9 @@ export class User {
 
   @OneToMany(() => Company, (c) => c.owner)
   companies: Company[];
+
+  @OneToMany(() => Application, (a) => a.applicant)
+  applications: Application[];
 
   @CreateDateColumn()
   createdAt: Date;
