@@ -2,6 +2,7 @@ import { ExperienceLevel } from 'src/common/enums/experience-level.enum';
 import { EmploymentType } from 'src/common/enums/employment-type.enum';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
@@ -12,6 +13,7 @@ import {
 import { Company } from 'src/companies/entities/company.entity';
 import { Skill } from 'src/skills/entities/skill.entity';
 import { Application } from 'src/applications/entities/application.entity';
+import { SavedJob } from 'src/saved-jobs/entities/saved-job.entity';
 
 @Entity()
 export class Job {
@@ -85,4 +87,10 @@ export class Job {
 
   @OneToMany(() => Application, (a) => a.job)
   applications: Application[];
+
+  @OneToMany(() => SavedJob, (sj) => sj.job)
+  job: SavedJob;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

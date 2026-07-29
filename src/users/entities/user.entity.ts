@@ -3,6 +3,7 @@ import { Application } from 'src/applications/entities/application.entity';
 import { Role } from 'src/common/enums/user.role.enum';
 import { Company } from 'src/companies/entities/company.entity';
 import { Notification } from 'src/notifications/entities/notification.entity';
+import { SavedJob } from 'src/saved-jobs/entities/saved-job.entity';
 import {
   Column,
   CreateDateColumn,
@@ -63,6 +64,9 @@ export class User {
 
   @OneToMany(() => Notification, (n) => n.recipient)
   notifications: Notification[];
+
+  @OneToMany(() => SavedJob, (sj) => sj.user)
+  savedJobs: SavedJob[];
 
   @CreateDateColumn()
   createdAt: Date;

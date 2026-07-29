@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -18,6 +19,7 @@ import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/common/decorators/role.decorator';
 import { Role } from 'src/common/enums/user.role.enum';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { FilterJobDto } from './dto/filter-jobs.dto';
 
 @ApiBearerAuth()
 @Controller('jobs')
@@ -32,8 +34,8 @@ export class JobsController {
   }
 
   @Get()
-  findAll() {
-    return this.jobsService.findAll();
+  findAll(@Query() query: FilterJobDto) {
+    return this.jobsService.findAll(query);
   }
 
   @Get(':id')
