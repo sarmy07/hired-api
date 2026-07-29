@@ -1,4 +1,7 @@
 export enum NotificationType {
-  EMAIL = 'email',
-  SMS = 'sms',
+  JOB_APPLICATION = 'JOB_APPLICATION',
+  APPLICATION_STATUS = 'APPLICATION_STATUS',
+  NEW_JOB = 'NEW_JOB',
+  GENERAL = 'GENERAL',
+  WITHDRAWN = 'withdrawn',
 }

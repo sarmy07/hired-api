@@ -6,6 +6,7 @@ import { Application } from './entities/application.entity';
 import { UsersModule } from 'src/users/users.module';
 import { JobsModule } from 'src/jobs/jobs.module';
 import { CompaniesModule } from 'src/companies/companies.module';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { CompaniesModule } from 'src/companies/companies.module';
     UsersModule,
     JobsModule,
     CompaniesModule,
+    NotificationsModule,
   ],
   controllers: [ApplicationsController],
   providers: [ApplicationsService],

@@ -1,5 +1,12 @@
 import { NotificationType } from 'src/common/enums/notification.type.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Notification {
@@ -22,4 +29,10 @@ export class Notification {
     enum: NotificationType,
   })
   type: NotificationType;
+
+  @ManyToOne(() => User, (u) => u.notifications)
+  recipient: User;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

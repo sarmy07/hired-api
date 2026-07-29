@@ -2,6 +2,7 @@ import { application } from 'express';
 import { Application } from 'src/applications/entities/application.entity';
 import { Role } from 'src/common/enums/user.role.enum';
 import { Company } from 'src/companies/entities/company.entity';
+import { Notification } from 'src/notifications/entities/notification.entity';
 import {
   Column,
   CreateDateColumn,
@@ -59,6 +60,9 @@ export class User {
 
   @OneToMany(() => Application, (a) => a.applicant)
   applications: Application[];
+
+  @OneToMany(() => Notification, (n) => n.recipient)
+  notifications: Notification[];
 
   @CreateDateColumn()
   createdAt: Date;
