@@ -49,13 +49,18 @@ export class SavedJobsService {
 
     if (existing)
       throw new ConflictException('you have already saved this job');
+
+    return await this.savedJobRepo.create({
+      user,
+      job,
+    });
   }
 
   create(dto: CreateSavedJobDto) {
     return 'This action adds a new savedJob';
   }
 
-  async findAll(userId: string) {
+  async findAllMySavedJobs(userId: string) {
     return await this.savedJobRepo.find({
       where: {
         user: { id: userId },
