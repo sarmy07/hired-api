@@ -13,8 +13,6 @@ import { Repository } from 'typeorm';
 import { CompaniesService } from 'src/companies/companies.service';
 import { SkillsService } from 'src/skills/skills.service';
 import { FilterJobDto } from './dto/filter-jobs.dto';
-import { EmploymentType } from 'src/common/enums/employment-type.enum';
-import { ExperienceLevel } from 'src/common/enums/experience-level.enum';
 
 @Injectable()
 export class JobsService {
@@ -104,7 +102,25 @@ export class JobsService {
       });
     }
 
-    return qb.getMany();
+    qb.orderBy(`job.${query.sortBy ?? 'createdAt'}`, query.order ?? 'DESC');
+
+    // const { page, limit } = query;
+    // const skip = (page - 1) * limit;
+
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 10;
+
+    qb.skip((page - 1) * limit).take(limit);
+    const [jobs, total] = await qb.getManyAndCount();
+    return {
+      data: jobs,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(id: string) {
