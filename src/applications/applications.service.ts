@@ -73,7 +73,6 @@ export class ApplicationsService {
       message: `${applicant.firstName} ${applicant.lastName} applied for ${job.title}`,
       type: NotificationType.JOB_APPLICATION,
     });
-
     return await this.applicationRepo.save(application);
   }
 
@@ -100,7 +99,11 @@ export class ApplicationsService {
         applicant: { id: userId },
       },
       relations: {
-        job: true,
+        job: {
+          company: {
+            owner: true,
+          },
+        },
       },
     });
 
@@ -153,7 +156,7 @@ export class ApplicationsService {
     await this.notificationService.create({
       recipientId: application.job.company.owner.id,
       title: 'Application Withdrawn',
-      message: `${application.applicant.firstName} ${application.applicant.lastName} has withdrawn their application`,
+      message: `${application.applicant.firstName} ${application.applicant.lastName} has withdrawn their application for ${application.job.title}`,
       type: NotificationType.WITHDRAWN,
     });
     return {

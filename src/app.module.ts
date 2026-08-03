@@ -1,3 +1,4 @@
+import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -46,6 +47,7 @@ import authConfig from './auth/config/authConfig';
     NotificationsModule,
     MailModule,
     UploadsModule,
+    DashboardModule,
     SavedJobsModule,
     BookmarksModule,
     ReportsModule,
