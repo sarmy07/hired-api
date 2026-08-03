@@ -2,6 +2,7 @@ import { Job } from 'src/jobs/entities/job.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -45,6 +46,6 @@ export class Company {
   @OneToMany(() => Job, (j) => j.company)
   jobs: Job[];
 
-  //   @Column()
-  //   ownerId:
+  @CreateDateColumn()
+  createdAt: Date;
 }
