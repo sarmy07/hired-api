@@ -6,10 +6,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Application } from 'src/applications/entities/application.entity';
 import { ApplicationStatus } from 'src/common/enums/application.status.enum';
+import { Role } from 'src/common/enums/user.role.enum';
 import { Company } from 'src/companies/entities/company.entity';
 import { Job } from 'src/jobs/entities/job.entity';
 import { Notification } from 'src/notifications/entities/notification.entity';
 import { SavedJob } from 'src/saved-jobs/entities/saved-job.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -29,6 +31,9 @@ export class DashboardService {
 
     @InjectRepository(SavedJob)
     private readonly savedJobRepo: Repository<SavedJob>,
+
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
   async getEmployerDashboard(userId: string) {
@@ -186,5 +191,54 @@ export class DashboardService {
     };
   }
 
-  async getAdminDashboard() {}
+  private async countUserByRole(userId: string, role: Role) {
+    return this.userRepo.find({
+      where: {
+        id: userId,
+        role,
+      },
+    });
+  }
+
+  async getAdminDashboard(userId: string) {
+    const [
+      totalUsers,
+      employers,
+      jobSeekers,
+      openJobs,
+      closedJobs,
+      applications,
+    ] = await Promise.all([
+      this.userRepo.count({}),
+
+      this.countUserByRole(userId, Role.EMPLOYER),
+
+      this.countUserByRole(userId, Role.JOB_SEEKER),
+
+      this.companyRepo.count({}),
+
+      this.JobRepo.count({
+        where: {
+          isOpen: true,
+        },
+      }),
+
+      this.JobRepo.count({
+        where: {
+          isOpen: false,
+        },
+      }),
+
+      this.applicationRepo.count({}),
+    ]);
+
+    return {
+      totalUsers,
+      employers,
+      jobSeekers,
+      openJobs,
+      closedJobs,
+      applications,
+    };
+  }
 }

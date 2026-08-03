@@ -22,4 +22,17 @@ export class DashboardController {
   getEmployerDashboard(@CurrentUser() user: User) {
     return this.dashboardService.getEmployerDashboard(user.id);
   }
+  @Get('jobseeker')
+  @UseGuards(RoleGuard)
+  @Roles(Role.JOB_SEEKER)
+  getJobSeekerDashboard(@CurrentUser() user: User) {
+    return this.dashboardService.getJobSeekeDashboard(user.id);
+  }
+
+  @Get('admin')
+  @UseGuards(RoleGuard)
+  @Roles(Role.ADMIN)
+  getAdminDashboard(@CurrentUser() user: User) {
+    return this.dashboardService.getAdminDashboard(user.id);
+  }
 }

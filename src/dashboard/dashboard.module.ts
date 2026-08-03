@@ -11,6 +11,7 @@ import { Job } from 'src/jobs/entities/job.entity';
 import { Company } from 'src/companies/entities/company.entity';
 import { SavedJob } from 'src/saved-jobs/entities/saved-job.entity';
 import { Notification } from 'src/notifications/entities/notification.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { Notification } from 'src/notifications/entities/notification.entity';
       Company,
       Notification,
       SavedJob,
+      User,
     ]),
   ],
   controllers: [DashboardController],

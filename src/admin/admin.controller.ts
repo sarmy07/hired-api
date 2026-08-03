@@ -9,8 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { CreateAdminDto } from './dto/create-admin.dto';
-import { UpdateAdminDto } from './dto/update-admin.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -64,19 +62,14 @@ export class AdminController {
     return this.adminService.findSingleJob(jobId);
   }
 
-  @Patch('/admin/users/:id/block-unblock')
+  @Patch('/users/:id/block-unblock')
   blockAndUnblockUser(@Param('userId') userId: string) {
     return this.adminService.blockAndUnblockUser(userId);
   }
 
-  @Patch('/admin/jobs/:id/open-close')
+  @Patch('/jobs/:id/open-close')
   openAndCloseJobs(@Param('jobId') jobId: string) {
     return this.adminService.blockAndUnblockUser(jobId);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(+id, updateAdminDto);
   }
 
   @Delete('/user/:id')
