@@ -42,7 +42,7 @@ export class User {
   @Column({
     default: true,
   })
-  isVerified: boolean;
+  isActive: boolean;
 
   @Column({
     type: 'varchar',
