@@ -30,6 +30,6 @@ async function bootstrap() {
   SwaggerModule.setup('api/hired', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log('Hired-APi is running on http://localhost:3000');
+  console.log('Hired-Api is running on http://localhost:3000');
 }
 bootstrap();
