@@ -14,9 +14,6 @@ export class ProfilesService {
   ) {}
 
   async findOne(id: string, userId: string) {
-    const user = await this.userService.findOne(userId);
-    if (!user) return null;
-
     const profile = await this.profileRepo.findOne({
       where: {
         id,
