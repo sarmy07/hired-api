@@ -11,19 +11,18 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
 
-  @Get(':id')
+  @Get()
   @UseGuards(JwtAuthGuard)
-  findOne(@Param('id') id: string, @CurrentUser() user: User) {
-    return this.profilesService.findOne(id, user.id);
+  findOne(@CurrentUser() user: User) {
+    return this.profilesService.findOne(user.id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   update(
-    @Param('id') id: string,
     @Body() updateProfileDto: UpdateProfileDto,
     @CurrentUser() user: User,
   ) {
-    return this.profilesService.update(id, updateProfileDto, user.id);
+    return this.profilesService.update(updateProfileDto, user.id);
   }
 }

@@ -13,13 +13,15 @@ export class ProfilesService {
     private readonly userService: UsersService,
   ) {}
 
-  async findOne(id: string, userId: string) {
+  async findOne(userId: string) {
     const profile = await this.profileRepo.findOne({
       where: {
-        id,
         user: {
           id: userId,
         },
+      },
+      relations: {
+        user: true,
       },
     });
 
@@ -28,8 +30,8 @@ export class ProfilesService {
     return profile;
   }
 
-  async update(id: string, dto: UpdateProfileDto, userId: string) {
-    const profile = await this.findOne(id, userId);
+  async update(dto: UpdateProfileDto, userId: string) {
+    const profile = await this.findOne(userId);
     if (!profile) return null;
 
     Object.assign(profile, dto);

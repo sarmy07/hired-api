@@ -20,6 +20,9 @@ import type { ConfigType } from '@nestjs/config';
 import { RefreshTokenDto } from './dtos/refresh-token.dto';
 import { User } from 'src/users/entities/user.entity';
 import { Role } from 'src/common/enums/user.role.enum';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Profile } from 'src/profiles/entities/profile.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +32,8 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly hashingProvider: HashingProvider,
     private readonly jwtService: JwtService,
+    @InjectRepository(Profile)
+    private readonly profileRepo: Repository<Profile>,
   ) {}
   async register(dto: RegisterDto) {
     if (dto.role === Role.ADMIN) {
@@ -45,6 +50,10 @@ export class AuthService {
       ...dto,
       password: hash,
     });
+
+    const profile = await this.profileRepo.create({ user });
+
+    await this.profileRepo.save(profile);
 
     const { password, ...rest } = user;
 

@@ -12,7 +12,7 @@ export class Profile {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   bio: string;
 
   @Column({
@@ -38,8 +38,15 @@ export class Profile {
 
   @Column({
     type: 'varchar',
+    nullable: true,
   })
   address: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  avatar: string | null;
 
   @OneToOne(() => User, (u) => u.profile, { onDelete: 'CASCADE' })
   @JoinColumn()

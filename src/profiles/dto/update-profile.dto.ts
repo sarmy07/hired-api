@@ -1,29 +1,33 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateProfileDto } from './create-profile.dto';
 import { IsOptional } from 'class-validator';
 
 export class UpdateProfileDto {
   @IsOptional()
-  firstName: string;
+  firstName?: string;
 
   @IsOptional()
-  lastName: string;
+  lastName?: string;
 
   @IsOptional()
-  phoneNumber: string;
+  phone?: string;
 
   @IsOptional()
-  location: string;
+  location?: string;
 
   @IsOptional()
-  bio: string;
+  bio?: string;
 
   @IsOptional()
-  portofolioUrl: string;
+  portofolio?: string;
 
   @IsOptional()
-  githubUrl: string;
+  github?: string;
 
   @IsOptional()
-  linkedinUrl: string;
+  linkedIn?: string;
+
+  @IsOptional()
+  address?: string;
+
+  @IsOptional()
+  avatar?: string | null;
 }

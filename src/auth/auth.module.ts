@@ -13,9 +13,12 @@ import { JwtModule } from '@nestjs/jwt';
 import authConfig from './config/authConfig';
 import { UsersModule } from 'src/users/users.module';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Profile } from 'src/profiles/entities/profile.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Profile]),
     UsersModule,
     ConfigModule.forFeature(authConfig),
     PassportModule.register({

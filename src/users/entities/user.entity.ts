@@ -9,6 +9,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -50,34 +51,7 @@ export class User {
     type: 'varchar',
     nullable: true,
   })
-  avatar: string | null;
-
-  @Column({
-    type: 'varchar',
-    nullable: true,
-  })
   refreshToken: string;
-
-  @Column({ nullable: true })
-  phoneNumber: string;
-
-  @Column({ nullable: true })
-  location: string;
-
-  @Column({ type: 'text', nullable: true })
-  bio: string;
-
-  @Column({ nullable: true })
-  portfolioUrl: string;
-
-  @Column({ nullable: true })
-  githubUrl: string;
-
-  @Column({ nullable: true })
-  linkedinUrl: string;
-
-  @Column({ nullable: true })
-  resumeUrl: string;
 
   @OneToMany(() => Company, (c) => c.owner)
   companies: Company[];
