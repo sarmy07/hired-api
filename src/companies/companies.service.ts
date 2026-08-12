@@ -48,7 +48,17 @@ export class CompaniesService {
     return await this.companyRepo.save(company);
   }
 
-  async findAll() {
+  async findAll(userId: string) {
+    return await this.companyRepo.find({
+      where: {
+        owner: {
+          id: userId,
+        },
+      },
+    });
+  }
+
+  async findAllForAdmin() {
     return await this.companyRepo.find({
       relations: {
         owner: true,
@@ -95,6 +105,9 @@ export class CompaniesService {
   }
 
   async remove(id: string, userId: string) {
+    const owner = await this.userService.findOne(userId);
+    if (!owner) throw new NotFoundException('owner not found');
+
     const company = await this.companyRepo.findOne({
       where: {
         id,
@@ -104,9 +117,6 @@ export class CompaniesService {
       },
     });
     if (!company) throw new NotFoundException('company not found');
-
-    const owner = await this.userService.findOne(userId);
-    if (!owner) throw new NotFoundException('owner not found');
 
     if (company.owner.id !== owner.id) {
       throw new ForbiddenException(

@@ -17,7 +17,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Role } from 'src/common/enums/user.role.enum';
 import { Roles } from 'src/common/decorators/role.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @Controller('companies')
@@ -35,8 +35,18 @@ export class CompaniesController {
   }
 
   @Get()
-  findAll() {
-    return this.companiesService.findAll();
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Get all companies only for owner' })
+  findAll(@CurrentUser() user: User) {
+    return this.companiesService.findAll(user.id);
+  }
+
+  @Get('admin')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Get all companies only for admin' })
+  findAllForAdmin() {
+    return this.companiesService.findAllForAdmin();
   }
 
   @Get(':id')

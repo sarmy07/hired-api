@@ -30,11 +30,15 @@ export class SkillsController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   findAll() {
     return this.skillsService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.ADMIN)
   findOne(@Param('id') id: string) {
     return this.skillsService.findOne(id);
   }
