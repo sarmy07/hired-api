@@ -13,6 +13,8 @@ import { Repository } from 'typeorm';
 import { CompaniesService } from 'src/companies/companies.service';
 import { SkillsService } from 'src/skills/skills.service';
 import { FilterJobDto } from './dto/filter-jobs.dto';
+import { AddJobSkillDto } from './dto/add-job-skill.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class JobsService {
@@ -132,6 +134,7 @@ export class JobsService {
         company: {
           owner: true,
         },
+        skills: true,
       },
     });
     if (!job) throw new NotFoundException('Job not found');
@@ -149,17 +152,23 @@ export class JobsService {
       );
     }
 
-    // const skills = await this.skillService.findByIds(dto.skillids ?? [])
-
     if (dto.skillids) {
       const skills = await this.skillService.findByIds(dto.skillids);
+
       if (skills.length !== dto.skillids?.length) {
         throw new BadRequestException('One or more skills are invalid');
       }
+
+      // const existingSkills = new Set(job.skills?.map((skill) => skill.id));
+
+      // const newSkills = skills.filter((skill) => !existingSkills.has(skill.id));
+
+      // job.skills = [...job.skills, ...newSkills];
       job.skills = skills;
     }
 
-    Object.assign(job, dto);
+    const { skillids, ...jobData } = dto;
+    Object.assign(job, jobData);
 
     return await this.jobRepo.save(job);
   }
@@ -178,5 +187,51 @@ export class JobsService {
     return {
       message: 'Job removed',
     };
+  }
+
+  async addSkills(jobId: string, userId: string, dto: AddJobSkillDto) {
+    const job = await this.findOne(jobId);
+    if (!job) throw new NotFoundException();
+
+    if (job.company.owner.id !== userId) {
+      throw new ForbiddenException(
+        'only the employer of this company can add skills',
+      );
+    }
+
+    const skills = await this.skillService.findByIds(dto.skillIds);
+
+    if (skills.length !== dto.skillIds.length) {
+      throw new BadRequestException('One or more skills are invalid');
+    }
+
+    const existingSkills = new Set(job.skills.map((skill) => skill.id));
+
+    const newSkills = skills.filter((skills) => !existingSkills.has(skills.id));
+
+    job.skills = [...job.skills, ...newSkills];
+
+    return await this.jobRepo.save(job);
+  }
+
+  async removeSkill(userId: string, jobId: string, skillId: string) {
+    const job = await this.findOne(jobId);
+    if (!job) throw new NotFoundException();
+
+    if (job.company.owner.id !== userId) {
+      throw new ForbiddenException(
+        'Only employers of the company can remove skills',
+      );
+    }
+
+    const someSkills = job.skills.some((skill) => skill.id === skillId);
+
+    if (!someSkills) {
+      throw new NotFoundException('This skill is not attached to the job');
+    }
+
+    job.skills = job.skills.filter((skill) => skill.id !== skillId);
+
+    return await this.jobRepo.save(job);
   }
 }

@@ -35,7 +35,7 @@ export class ApplicationsController {
     return this.applicationsService.create(createApplicationDto, user.id);
   }
 
-  @Get()
+  @Get('/company/:companyId')
   @Roles(Role.EMPLOYER)
   @ApiOperation({
     summary: 'fetch all job applications for a singe company - employers only',

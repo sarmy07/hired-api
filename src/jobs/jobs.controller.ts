@@ -18,8 +18,9 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/common/decorators/role.decorator';
 import { Role } from 'src/common/enums/user.role.enum';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { FilterJobDto } from './dto/filter-jobs.dto';
+import { AddJobSkillDto } from './dto/add-job-skill.dto';
 
 @ApiBearerAuth()
 @Controller('jobs')
@@ -36,6 +37,30 @@ export class JobsController {
   @Get()
   findAll(@Query() query: FilterJobDto) {
     return this.jobsService.findAll(query);
+  }
+
+  @Post(':id/skills')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.EMPLOYER)
+  @ApiOperation({ summary: 'add skill' })
+  addSkills(
+    @Param('id') id: string,
+    @Body() dto: AddJobSkillDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.jobsService.addSkills(id, user.id, dto);
+  }
+
+  @Delete(':id/skills/:skillId')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.EMPLOYER)
+  @ApiOperation({ summary: 'remove skill' })
+  removeSkill(
+    @CurrentUser() user: User,
+    @Param('id') id: string,
+    @Param('skillId') skillId: string,
+  ) {
+    return this.jobsService.removeSkill(user.id, id, skillId);
   }
 
   @Get(':id')

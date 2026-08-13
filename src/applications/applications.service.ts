@@ -104,6 +104,7 @@ export class ApplicationsService {
             owner: true,
           },
         },
+        applicant: true,
       },
     });
 
