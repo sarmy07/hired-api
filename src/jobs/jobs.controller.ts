@@ -30,6 +30,7 @@ export class JobsController {
   @Post()
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(Role.EMPLOYER)
+  @ApiOperation({ summary: 'create a job' })
   create(@Body() createJobDto: CreateJobDto, @CurrentUser() user: User) {
     return this.jobsService.create(createJobDto, user.id);
   }
@@ -77,6 +78,14 @@ export class JobsController {
     @CurrentUser() user: User,
   ) {
     return this.jobsService.update(id, updateJobDto, user.id);
+  }
+
+  @Patch(':jobId/open-close')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(Role.EMPLOYER)
+  @ApiOperation({ summary: 'Open and close a job' })
+  openCloseJobs(@Param('jobId') jobId: string, @CurrentUser() user: User) {
+    return this.jobsService.openCloseJobs(jobId, user.id);
   }
 
   @Delete(':id')

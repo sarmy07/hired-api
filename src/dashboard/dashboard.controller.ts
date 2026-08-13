@@ -10,7 +10,9 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
 import { Roles } from 'src/common/decorators/role.decorator';
 import { Role } from 'src/common/enums/user.role.enum';
 import { RoleGuard } from 'src/auth/guards/role.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('dashboard')
 @UseGuards(JwtAuthGuard)
 export class DashboardController {

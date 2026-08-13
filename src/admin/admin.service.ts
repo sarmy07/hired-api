@@ -95,15 +95,7 @@ export class AdminService {
     return job;
   }
 
-  async openCloseJobs(jobId: string) {
-    const job = await this.findSingleJob(jobId);
-
-    job.isOpen = !job.isOpen;
-
-    return await this.jobRepo.save(job);
-  }
-
-  async deleteJob(jobId) {
+  async deleteJob(jobId: string) {
     return this.jobRepo.delete(jobId);
   }
 }

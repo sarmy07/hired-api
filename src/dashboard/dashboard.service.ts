@@ -191,10 +191,9 @@ export class DashboardService {
     };
   }
 
-  private async countUserByRole(userId: string, role: Role) {
-    return this.userRepo.find({
+  private async countUserByRole(id: string, role: Role) {
+    return this.userRepo.count({
       where: {
-        id: userId,
         role,
       },
     });
@@ -205,6 +204,7 @@ export class DashboardService {
       totalUsers,
       employers,
       jobSeekers,
+      admin,
       openJobs,
       closedJobs,
       applications,
@@ -214,6 +214,8 @@ export class DashboardService {
       this.countUserByRole(userId, Role.EMPLOYER),
 
       this.countUserByRole(userId, Role.JOB_SEEKER),
+
+      this.countUserByRole(userId, Role.ADMIN),
 
       this.companyRepo.count({}),
 
@@ -236,6 +238,7 @@ export class DashboardService {
       totalUsers,
       employers,
       jobSeekers,
+      admin,
       openJobs,
       closedJobs,
       applications,

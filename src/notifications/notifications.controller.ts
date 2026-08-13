@@ -5,13 +5,14 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { CreateNotificationDto } from './dto/create-notification.dto';
-import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { CurrentUser } from 'src/common/decorators/current.user.decorator';
 import { User } from 'src/users/entities/user.entity';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('notifications')
 export class NotificationsController {
@@ -23,11 +24,13 @@ export class NotificationsController {
   }
 
   @Get('notifications')
+  @UseGuards(JwtAuthGuard)
   findAll(@CurrentUser() user: User) {
     return this.notificationsService.findAll(user.id);
   }
 
   @Get('unread-count')
+  @UseGuards(JwtAuthGuard)
   unreadCount(@CurrentUser() user: User) {
     return this.notificationsService.unreadCount(user.id);
   }
@@ -37,16 +40,17 @@ export class NotificationsController {
     return this.notificationsService.findOne(id, user.id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateNotificationDto: UpdateNotificationDto,
-  ) {
-    return this.notificationsService.update(id, updateNotificationDto);
+  @Patch(':id/read')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Read single notification' })
+  markAsRead(@Param('id') id: string, @CurrentUser() user: User) {
+    return this.notificationsService.markAsRead(id, user.id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.notificationsService.remove(+id);
+  @Patch('read-all')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Read all notifications' })
+  update(@CurrentUser() user: User) {
+    return this.notificationsService.markAllAsRead(user.id);
   }
 }

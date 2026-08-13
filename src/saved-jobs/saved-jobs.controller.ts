@@ -31,12 +31,7 @@ export class SavedJobsController {
     return this.savedJobsService.saveJob(dto, user.id);
   }
 
-  @Post()
-  create(@Body() createSavedJobDto: CreateSavedJobDto) {
-    return this.savedJobsService.create(createSavedJobDto);
-  }
-
-  @Get('saved-jobs')
+  @Get('my-saved-jobs')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(Role.JOB_SEEKER)
   findAllMySavedJobs(@CurrentUser() user: User) {
@@ -46,14 +41,6 @@ export class SavedJobsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.savedJobsService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateSavedJobDto: UpdateSavedJobDto,
-  ) {
-    return this.savedJobsService.update(+id, updateSavedJobDto);
   }
 
   @Delete(':id')

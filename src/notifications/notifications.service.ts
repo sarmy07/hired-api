@@ -1,17 +1,9 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
-import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Notification } from './entities/notification.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
-import { NotificationType } from 'src/common/enums/notification.type.enum';
-import { CompaniesService } from 'src/companies/companies.service';
-import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class NotificationsService {
@@ -19,7 +11,6 @@ export class NotificationsService {
     @InjectRepository(Notification)
     private readonly notificationRepo: Repository<Notification>,
     private readonly userService: UsersService,
-    private readonly companyService: CompaniesService,
   ) {}
 
   async create(dto: CreateNotificationDto) {
@@ -92,11 +83,5 @@ export class NotificationsService {
         isRead: false,
       },
     });
-  }
-
-  async update(id: string, dto: UpdateNotificationDto) {}
-
-  remove(id: number) {
-    return `This action removes a #${id} notification`;
   }
 }

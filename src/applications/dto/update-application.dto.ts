@@ -1,5 +1,4 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { CreateApplicationDto } from './create-application.dto';
 import { IsEnum } from 'class-validator';
 import { ApplicationStatus } from 'src/common/enums/application.status.enum';
 

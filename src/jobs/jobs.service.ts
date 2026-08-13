@@ -234,4 +234,18 @@ export class JobsService {
 
     return await this.jobRepo.save(job);
   }
+
+  async openCloseJobs(jobId: string, userId: string) {
+    const job = await this.findOne(jobId);
+    if (!job) throw new NotFoundException();
+
+    if (job.company.owner.id !== userId) {
+      throw new ForbiddenException(
+        'Only employers of this job can perform this action',
+      );
+    }
+    job.isOpen = !job.isOpen;
+
+    return await this.jobRepo.save(job);
+  }
 }

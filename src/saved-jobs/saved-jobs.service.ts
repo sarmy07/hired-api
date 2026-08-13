@@ -3,6 +3,7 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateSavedJobDto } from './dto/create-saved-job.dto';
 import { UpdateSavedJobDto } from './dto/update-saved-job.dto';
@@ -26,11 +27,11 @@ export class SavedJobsService {
     if (!job) return null;
 
     if (!job.isOpen) {
-      throw new BadRequestException('only job that aee oped can be saved');
+      throw new BadRequestException('only job that is open can be saved');
     }
 
     const user = await this.userService.findOne(userId);
-    if (!user) return null;
+    if (!user) throw new NotFoundException();
 
     if (job.company.owner.id === userId) {
       throw new ForbiddenException('you cannot save your own job');
@@ -50,14 +51,12 @@ export class SavedJobsService {
     if (existing)
       throw new ConflictException('you have already saved this job');
 
-    return await this.savedJobRepo.create({
+    this.savedJobRepo.create({
       user,
       job,
     });
-  }
 
-  create(dto: CreateSavedJobDto) {
-    return 'This action adds a new savedJob';
+    return await this.savedJobRepo.save({ job, user });
   }
 
   async findAllMySavedJobs(userId: string) {
@@ -86,15 +85,11 @@ export class SavedJobsService {
     });
   }
 
-  update(id: number, updateSavedJobDto: UpdateSavedJobDto) {
-    return `This action updates a #${id} savedJob`;
-  }
-
   async remove(id: string, userId: string) {
     const savedJob = await this.findOne(id);
     if (!savedJob) return null;
 
-    if (savedJob.user.id! === userId) {
+    if (savedJob.user.id !== userId) {
       throw new ForbiddenException();
     }
 
