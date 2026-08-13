@@ -21,7 +21,6 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { MailModule } from './mail/mail.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { SavedJobsModule } from './saved-jobs/saved-jobs.module';
-import { BookmarksModule } from './bookmarks/bookmarks.module';
 import { ReportsModule } from './reports/reports.module';
 import { AdminModule } from './admin/admin.module';
 import authConfig from './auth/config/authConfig';
@@ -49,7 +48,6 @@ import authConfig from './auth/config/authConfig';
     UploadsModule,
     DashboardModule,
     SavedJobsModule,
-    BookmarksModule,
     ReportsModule,
     AdminModule,
     AuthModule,
