@@ -3,6 +3,7 @@ import { Application } from 'src/applications/entities/application.entity';
 import { Role } from 'src/common/enums/user.role.enum';
 import { Company } from 'src/companies/entities/company.entity';
 import { Education } from 'src/education/entities/education.entity';
+import { Experience } from 'src/experience/entities/experience.entity';
 import { Notification } from 'src/notifications/entities/notification.entity';
 import { Profile } from 'src/profiles/entities/profile.entity';
 import { SavedJob } from 'src/saved-jobs/entities/saved-job.entity';
@@ -71,6 +72,9 @@ export class User {
 
   @OneToMany(() => Education, (e) => e.user)
   educations: Education[];
+
+  @OneToMany(() => Experience, (e) => e.user)
+  experiences: Experience[];
 
   @CreateDateColumn()
   createdAt: Date;
