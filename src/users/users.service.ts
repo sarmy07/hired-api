@@ -23,6 +23,15 @@ export class UsersService {
       where: {
         email,
       },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        password: true,
+        role: true,
+        isActive: true,
+      },
     });
   }
 
@@ -34,6 +43,14 @@ export class UsersService {
     return await this.userRepo.findOne({
       where: {
         id,
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        isActive: true,
       },
     });
   }

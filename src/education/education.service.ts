@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -21,6 +22,8 @@ export class EducationService {
   async create(dto: CreateEducationDto, userId: string) {
     const user = await this.userService.findOne(userId);
     if (!user) throw new NotFoundException();
+
+    this.validateDates(dto.startDate, dto.endDate);
 
     const education = this.educationRepo.create({
       ...dto,
@@ -53,6 +56,11 @@ export class EducationService {
   async update(id: string, dto: UpdateEducationDto, userId: string) {
     const education = await this.findOne(id, userId);
 
+    const startDate = dto.startDate ?? education.startDate;
+    const endDate = dto.endDate ?? education.endDate;
+
+    this.validateDates(startDate, endDate);
+
     Object.assign(education, dto);
 
     return await this.educationRepo.save(education);
@@ -66,5 +74,18 @@ export class EducationService {
     return {
       message: 'education has been removed',
     };
+  }
+
+  private async validateDates(
+    startDate?: string | Date,
+    endDate?: string | Date | null,
+  ) {
+    if (startDate && endDate) {
+      if (new Date(endDate) < new Date(startDate)) {
+        throw new BadRequestException(
+          'End date cannot be before the start date',
+        );
+      }
+    }
   }
 }
