@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Education {
@@ -14,9 +22,23 @@ export class Education {
   @Column()
   field: string;
 
-  @Column()
+  @Column({ type: 'date' })
   startDate: Date;
 
-  @Column()
-  endDate: Date;
+  @Column({ type: 'date', nullable: true })
+  endDate: Date | null;
+
+  @Column({
+    nullable: true,
+  })
+  description: string;
+
+  @ManyToOne(() => User, (u) => u.educations, { onDelete: 'CASCADE' })
+  user: User;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
