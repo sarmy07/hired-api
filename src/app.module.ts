@@ -16,12 +16,10 @@ import { CategoriesModule } from './categories/categories.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { EducationModule } from './education/education.module';
 import { ExperienceModule } from './experience/experience.module';
-import { ResumesModule } from './resumes/resumes.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { MailModule } from './mail/mail.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { SavedJobsModule } from './saved-jobs/saved-jobs.module';
-import { ReportsModule } from './reports/reports.module';
 import { AdminModule } from './admin/admin.module';
 import authConfig from './auth/config/authConfig';
 
@@ -42,13 +40,11 @@ import authConfig from './auth/config/authConfig';
     ProfilesModule,
     EducationModule,
     ExperienceModule,
-    ResumesModule,
     NotificationsModule,
     MailModule,
     UploadsModule,
     DashboardModule,
     SavedJobsModule,
-    ReportsModule,
     AdminModule,
     AuthModule,
   ],
