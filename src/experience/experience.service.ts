@@ -106,7 +106,7 @@ export class ExperienceService {
 
     if (startDate && endDate) {
       if (new Date(endDate) < new Date(startDate)) {
-        throw new BadRequestException('nd date canntot be before start date');
+        throw new BadRequestException('end date canntot be before start date');
       }
     }
   }
