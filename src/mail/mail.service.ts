@@ -1,26 +1,92 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMailDto } from './dto/create-mail.dto';
-import { UpdateMailDto } from './dto/update-mail.dto';
+import * as nodemailer from 'nodemailer';
+import { Job } from 'src/jobs/entities/job.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class MailService {
-  create(createMailDto: CreateMailDto) {
-    return 'This action adds a new mail';
+  private transporter = nodemailer.createTransport({
+    host: process.env.MAIL_HOST,
+    port: Number(process.env.MAIL_PORT),
+    secure: false,
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASSWORD,
+    },
+  } as nodemailer.TransportOptions);
+
+  async sendMail(to: string, subject: string, html: string) {
+    return this.transporter.sendMail({
+      from: process.env.MAIL_FROM,
+      to,
+      subject,
+      html,
+    });
   }
 
-  findAll() {
-    return `This action returns all mail`;
+  async sendNewApplicationEmail(
+    employerEmail: string,
+    applicant: User,
+    job: Job,
+  ) {
+    return this.sendMail(
+      employerEmail,
+
+      `New Application for ${job.title}`,
+
+      `
+       <h2>New Job Application</h2>
+
+        <p>
+          <strong>
+            ${applicant.firstName} ${applicant.lastName}
+          </strong>
+          has applied for your job.
+        </p>
+
+        <p>
+          <strong>Job:</strong> ${job.title}
+        </p>
+
+        <p>
+          Log in to Hired to review the application.
+        </p>
+      `,
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} mail`;
-  }
+  async sendApplicationStatusEmail(
+    applicantEmail: string,
+    applicantfirstName: string,
+    jobTitle: string,
+    status: string,
+  ) {
+    return this.sendMail(
+      applicantEmail,
 
-  update(id: number, updateMailDto: UpdateMailDto) {
-    return `This action updates a #${id} mail`;
-  }
+      `Application Update ${jobTitle}`,
 
-  remove(id: number) {
-    return `This action removes a #${id} mail`;
+      `
+      <h2>Application Status Update</h2>
+
+      <p>
+      Hello <strong>${applicantfirstName}</strong>
+      <p>
+
+      <p>
+      Yoor application for <strong>${jobTitle}</strong> has been updated.
+      </p>
+
+      <p>
+      <strong>Status:</strong> ${status}
+      </p>
+
+
+      <p>
+       Log in to Hired to view more details
+      </p>
+      
+      `,
+    );
   }
 }

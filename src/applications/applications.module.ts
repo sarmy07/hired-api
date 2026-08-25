@@ -7,6 +7,7 @@ import { UsersModule } from 'src/users/users.module';
 import { JobsModule } from 'src/jobs/jobs.module';
 import { CompaniesModule } from 'src/companies/companies.module';
 import { NotificationsModule } from 'src/notifications/notifications.module';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
     JobsModule,
     CompaniesModule,
     NotificationsModule,
+    MailModule,
   ],
   controllers: [ApplicationsController],
   providers: [ApplicationsService],

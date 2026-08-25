@@ -15,6 +15,7 @@ import { Role } from 'src/common/enums/user.role.enum';
 import { JobsService } from 'src/jobs/jobs.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { NotificationType } from 'src/common/enums/notification.type.enum';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class ApplicationsService {
@@ -24,6 +25,7 @@ export class ApplicationsService {
     private readonly userService: UsersService,
     private readonly jobService: JobsService,
     private readonly notificationService: NotificationsService,
+    private readonly mailService: MailService,
   ) {}
 
   async create(dto: CreateApplicationDto, userId: string) {
@@ -73,6 +75,12 @@ export class ApplicationsService {
       message: `${applicant.firstName} ${applicant.lastName} applied for ${job.title}`,
       type: NotificationType.JOB_APPLICATION,
     });
+
+    await this.mailService.sendNewApplicationEmail(
+      job.company.owner.email,
+      applicant,
+      job,
+    );
     return await this.applicationRepo.save(application);
   }
 
@@ -138,6 +146,8 @@ export class ApplicationsService {
 
     application.status = dto.status;
 
+    const updatedApplication = await this.applicationRepo.save(application);
+
     await this.notificationService.create({
       recipientId: application.applicant.id,
       title: 'Application Status',
@@ -145,7 +155,14 @@ export class ApplicationsService {
       type: NotificationType.APPLICATION_STATUS,
     });
 
-    return await this.applicationRepo.save(application);
+    await this.mailService.sendApplicationStatusEmail(
+      application.applicant.email,
+      application.applicant.firstName,
+      application.job.title,
+      application.status,
+    );
+
+    return updatedApplication;
   }
 
   async remove(id: string, userId: string) {
