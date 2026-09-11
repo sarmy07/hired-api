@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "strictPropertyInitialization": false,
+    "types": ["node", "multer"],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,

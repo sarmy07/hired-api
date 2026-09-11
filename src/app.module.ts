@@ -1,3 +1,4 @@
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
@@ -22,13 +23,15 @@ import { UploadsModule } from './uploads/uploads.module';
 import { SavedJobsModule } from './saved-jobs/saved-jobs.module';
 import { AdminModule } from './admin/admin.module';
 import authConfig from './auth/config/authConfig';
+import cloudinaryConfig from './cloudinary/config/cloudinaryConfig';
 
 @Module({
   imports: [
+    CloudinaryModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: validation,
-      load: [authConfig],
+      load: [authConfig, cloudinaryConfig],
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,

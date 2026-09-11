@@ -48,6 +48,9 @@ export class Profile {
   })
   avatar: string | null;
 
+  @Column({ nullable: true })
+  avatarId: string;
+
   @OneToOne(() => User, (u) => u.profile, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
